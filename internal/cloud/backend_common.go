@@ -389,6 +389,8 @@ func (b *Cloud) checkPolicy(stopCtx, cancelCtx context.Context, op *backend.Oper
 				if _, err = b.client.PolicyChecks.Override(stopCtx, pc.ID); err != nil {
 					return generalError(fmt.Sprintf("Failed to override policy check.\n%s", runUrl), err)
 				}
+			} else if !b.input {
+				return fmt.Errorf("Cannot override soft failed policy checks when -input=false. Please open the run in the browser to override.")
 			} else {
 				opts := &terraform.InputOpts{
 					Id:          "override",
